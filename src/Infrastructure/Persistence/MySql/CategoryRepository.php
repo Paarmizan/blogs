@@ -19,39 +19,57 @@ final class CategoryRepository implements CategoryRepositoryInterface
     public function findCategoriesWithPosts(int $postsPerCategory): array
     {
         $limit = max(1, $postsPerCategory);
+        $sql = <<<SQL
+            SELECT
+                c.id AS category_id,
+                c.name AS category_name,
+                c.description AS category_description,
+                ranked_posts.id,
+                ranked_posts.image,
+                ranked_posts.title,
+                ranked_posts.description,
+                ranked_posts.content,
+                ranked_posts.views_count,
+                ranked_posts.published_at
+            FROM categories c
+            INNER JOIN (
+                SELECT
+                    pc.category_id,
+                    p.id,
+                    p.image,
+                    p.title,
+                    p.description,
+                    p.content,
+                    p.views_count,
+                    p.published_at,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY pc.category_id
+                        ORDER BY p.published_at DESC, p.id DESC
+                    ) AS row_num
+                FROM post_categories pc
+                INNER JOIN posts p ON p.id = pc.post_id
+            ) ranked_posts ON ranked_posts.category_id = c.id
+            WHERE ranked_posts.row_num <= {$limit}
+            ORDER BY c.name ASC, ranked_posts.published_at DESC, ranked_posts.id DESC
+        SQL;
 
-        $categories = $this->pdo->query(
-            'SELECT c.id, c.name, c.description
-             FROM categories c
-             WHERE EXISTS (
-                 SELECT 1
-                 FROM post_categories pc
-                 WHERE pc.category_id = c.id
-             )
-             ORDER BY c.name ASC'
-        )->fetchAll();
+        $rows = $this->pdo->query($sql)->fetchAll();
 
-        $postsStmt = $this->pdo->prepare(
-            "SELECT p.id, p.image, p.title, p.description, p.content, p.views_count, p.published_at
-             FROM posts p
-             INNER JOIN post_categories pc ON pc.post_id = p.id
-             WHERE pc.category_id = :category_id
-             ORDER BY p.published_at DESC
-             LIMIT {$limit}"
-        );
+        $sectionsByCategoryId = [];
+        foreach ($rows as $row) {
+            $categoryId = (int) $row['category_id'];
 
-        $sections = [];
-        foreach ($categories as $categoryRow) {
-            $postsStmt->execute(['category_id' => (int) $categoryRow['id']]);
-            $postRows = $postsStmt->fetchAll();
+            if (!isset($sectionsByCategoryId[$categoryId])) {
+                $sectionsByCategoryId[$categoryId] = [
+                    'category' => $this->mapCategoryFromJoinedRow($row),
+                    'posts' => [],
+                ];
+            }
 
-            $sections[] = [
-                'category' => $this->mapCategory($categoryRow),
-                'posts' => array_map(fn (array $row) => $this->mapPost($row), $postRows),
-            ];
+            $sectionsByCategoryId[$categoryId]['posts'][] = $this->mapPost($row);
         }
 
-        return $sections;
+        return array_values($sectionsByCategoryId);
     }
 
     public function findById(int $id): ?Category
@@ -86,6 +104,15 @@ final class CategoryRepository implements CategoryRepositoryInterface
             (string) ($row['content'] ?? ''),
             (int) $row['views_count'],
             (string) $row['published_at']
+        );
+    }
+
+    private function mapCategoryFromJoinedRow(array $row): Category
+    {
+        return new Category(
+            (int) $row['category_id'],
+            (string) $row['category_name'],
+            (string) $row['category_description']
         );
     }
 }
