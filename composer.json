@@ -1,0 +1,26 @@
+{
+  "name": "k/blogs",
+  "description": "Simple blog on pure PHP with Smarty and MySQL",
+  "type": "project",
+  "require": {
+    "php": "^8.1",
+    "smarty/smarty": "^4.5",
+    "robmorgan/phinx": "^0.16",
+    "symfony/config": "^6.4",
+    "symfony/console": "^6.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Blog\\": "src/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "8.1.0"
+    }
+  },
+  "scripts": {
+    "migrate": "phinx migrate -e development",
+    "seed": "phinx seed:run -e development"
+  }
+}
