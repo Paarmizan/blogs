@@ -11,8 +11,9 @@ use PDO;
 
 final class PostRepository implements PostRepositoryInterface
 {
-    public function __construct(private readonly PDO $pdo)
-    {
+    public function __construct(
+        private readonly PDO $pdo
+    ) {
     }
 
     public function findByCategoryPaginated(int $categoryId, string $sortBy, int $page, int $perPage): array

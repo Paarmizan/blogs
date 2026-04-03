@@ -11,8 +11,9 @@ use PDO;
 
 final class CategoryRepository implements CategoryRepositoryInterface
 {
-    public function __construct(private readonly PDO $pdo)
-    {
+    public function __construct(
+        private readonly PDO $pdo
+    ) {
     }
 
     public function findCategoriesWithPosts(int $postsPerCategory): array
