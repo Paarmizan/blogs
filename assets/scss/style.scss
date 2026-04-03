@@ -1,0 +1,291 @@
+$bg: #f2f4f6;
+$ink: #243746;
+$muted: #70808d;
+$surface: #ffffff;
+$accent: #1f4d67;
+$accent-strong: #153a50;
+$line: #d5dce0;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: $ink;
+  background: $bg;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  width: min(1200px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.site-header,
+.site-footer {
+  background: $accent;
+  color: #fff;
+}
+
+.header-inner {
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.page-main {
+  min-height: calc(100vh - 158px);
+  padding: 40px 0 48px;
+}
+
+.site-footer {
+  padding: 26px 0;
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.category-block {
+  margin-bottom: 68px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+
+  h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 1.2rem;
+  }
+}
+
+.section-description {
+  margin: 10px 0 22px;
+  color: $muted;
+}
+
+.view-all,
+.read-more,
+.back-link {
+  color: $accent;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.post-card {
+  background: $surface;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid $line;
+  padding-bottom: 14px;
+
+  h3 {
+    margin: 14px 14px 8px;
+    font-size: 1.08rem;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  p {
+    margin: 0 14px 12px;
+    color: $muted;
+    line-height: 1.45;
+  }
+}
+
+.card-image-wrap {
+  display: block;
+  aspect-ratio: 16 / 9;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-meta {
+  font-size: 0.9rem;
+  color: #6a7a86;
+}
+
+.read-more {
+  margin: 0 14px;
+}
+
+.category-header {
+  margin-bottom: 18px;
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 10px 0 0;
+    color: $muted;
+  }
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.sort-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: 10px;
+  padding: 8px 12px;
+
+  label {
+    font-weight: 600;
+  }
+
+  select {
+    border: 1px solid $line;
+    border-radius: 6px;
+    padding: 5px 8px;
+    background: #fff;
+  }
+}
+
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  a {
+    text-decoration: none;
+    color: $accent;
+    border: 1px solid $line;
+    background: $surface;
+    padding: 6px 11px;
+    border-radius: 8px;
+  }
+
+  .active {
+    background: $accent;
+    color: #fff;
+    border-color: $accent;
+  }
+}
+
+.post-detail {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: 16px;
+  padding: 22px;
+
+  h1 {
+    margin: 16px 0 10px;
+  }
+}
+
+.post-hero-image {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.tag-list {
+  margin: 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  text-decoration: none;
+  background: #dbe8ee;
+  color: $accent-strong;
+  border-radius: 999px;
+  padding: 6px 11px;
+  font-size: 0.88rem;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: #2f4654;
+}
+
+.post-content {
+  line-height: 1.7;
+  color: #364f5f;
+}
+
+.similar-section {
+  margin-top: 34px;
+
+  h2 {
+    margin: 0 0 14px;
+  }
+}
+
+.empty-state {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+
+  p {
+    color: $muted;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .page-main {
+    padding-top: 24px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    justify-content: flex-start;
+  }
+}
