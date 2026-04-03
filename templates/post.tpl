@@ -35,7 +35,7 @@
                     <h3><a href="/post/{$similar.id}">{$similar.title|escape}</a></h3>
                     <p class="card-meta">{$similar.publishedAt|escape} · {$similar.viewsCount} просмотров</p>
                     <p>{$similar.description|escape}</p>
-                    <a href="/post/{$similar.id}" class="read-more">Continue Reading</a>
+                    <a href="/post/{$similar.id}" class="read-more">Читать далее</a>
                 </article>
             {/foreach}
         </div>
