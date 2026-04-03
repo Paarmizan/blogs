@@ -1,0 +1,9 @@
+/vendor/
+.env
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/templates_c/*
+!/storage/templates_c/.gitkeep
+.idea/
+.DS_Store
+/public/assets/
